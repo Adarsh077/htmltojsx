@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { withStyles, Container } from "@material-ui/core";
+import { AppBar } from "./components";
+import Home from "./screens/Home";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const styles = (theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  title: {
+    flexGrow: 1,
+  },
+  container: {
+    marginTop: "24px",
+  },
+});
+
+class App extends Component {
+  render() {
+    if (!localStorage.getItem("copyChange")) {
+      localStorage.setItem("copyChange", true);
+    }
+    if (!localStorage.getItem("createComponent")) {
+      localStorage.setItem("createComponent", false);
+    }
+    if (!localStorage.getItem("componentName")) {
+      localStorage.setItem("componentName", "");
+    }
+    const { classes } = this.props;
+    return (
+      <div className={classes.root}>
+        <AppBar />
+        <Container className={classes.container} maxWidth="xl">
+          <Home />
+        </Container>
+      </div>
+    );
+  }
 }
 
-export default App;
+export default withStyles(styles, { withTheme: true })(App);

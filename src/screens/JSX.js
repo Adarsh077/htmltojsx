@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { IconButton, Tooltip, Badge } from "@material-ui/core";
 import { FileCopyOutlined, GetAppOutlined } from "@material-ui/icons";
 import EditorBar from "./components/EditorBar";
-import { ControlledEditor as Editor } from "@monaco-editor/react";
 
 const hideBadge = () => !!localStorage.getItem("hideBadge");
 
@@ -17,28 +16,10 @@ export class JSX extends Component {
 
   // Function to download data to a file
   download = () => {
-    localStorage.setItem("hideBadge", "true");
     this.setState({ hideBadge: true });
-    const data = this.props.code;
-    const fileName =
-      localStorage.getItem("componentName") || "htmltojsx.ml.jsx";
-    var file = new Blob([data], { type: "text/javascript" });
-    if (window.navigator.msSaveOrOpenBlob)
-      // IE10+
-      window.navigator.msSaveOrOpenBlob(file, fileName);
-    else {
-      // Others
-      var a = document.createElement("a"),
-        url = URL.createObjectURL(file);
-      a.href = url;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(function () {
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      }, 0);
-    }
+    import("../utils/donwloadFile").then((download) => {
+      download.donwloadFile(this.props.code);
+    });
   };
 
   copyCode = (code) => {
@@ -50,13 +31,6 @@ export class JSX extends Component {
   render() {
     const { code } = this.props;
     const { hideBadge } = this.state;
-    const options = {
-      selectOnLineNumbers: true,
-      autoClosingBrackets: true,
-      smoothScrolling: true,
-      readOnly: true,
-    };
-    console.log(hideBadge);
     return (
       <div>
         <EditorBar label="JSX">
@@ -75,13 +49,14 @@ export class JSX extends Component {
             </IconButton>
           </Tooltip>
         </EditorBar>
-        <div className="editor-content">
-          <Editor
-            height="100%"
-            language="javascript"
+        <div className="editor-content ">
+          <textarea
+            spellCheck="false"
+            wrap="off"
+            readOnly
+            className="editor-area editor-jsx"
             value={code}
-            options={options}
-          />
+          ></textarea>
         </div>
       </div>
     );

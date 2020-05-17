@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Paper, Grid, Snackbar, Button } from "@material-ui/core";
 import prettier from "prettier/standalone";
 import babelparser from "prettier/parser-babel";
-import htmlparser from "prettier/parser-html";
 import HTMLtoJSX from "htmltojsx";
 import HTML from "./HTML";
 import JSX from "./JSX";
@@ -10,12 +9,6 @@ import JSX from "./JSX";
 const prettierOptions = {
   parser: "babel",
   plugins: [babelparser],
-  tabWidth: 2,
-};
-
-const prettierHTMLOptions = {
-  parser: "html",
-  plugins: [htmlparser],
   tabWidth: 2,
 };
 
@@ -53,7 +46,7 @@ class Home extends Component {
     }
   };
 
-  convertCode = (html, error) => {
+  convertCode = async (html, error) => {
     if (error) {
       return this.setState({ code: html });
     }
@@ -69,61 +62,25 @@ class Home extends Component {
       output = createComponent(output);
       output = this.formatCode(output);
       if (output.indexOf("Unexpected token") > -1) {
-        return this.prettify(html);
+        const { prettify } = await import("../utils/prettifyHTML");
+        output = prettify(output);
+        if (output.err) output = output.err;
       }
     }
 
     const shouldCopy = localStorage.getItem("copyChange") === "true";
-    if (shouldCopy) this.copyCode(output);
+    if (shouldCopy) await this.copyCode(output);
 
     return this.setState({ code: output });
   };
 
-  prettify = (html) => {
-    try {
-      const formattedHTML = prettier.format(html, prettierHTMLOptions);
-      return formattedHTML;
-    } catch (e) {
-      this.convertCode(e.message, true);
-    }
-  };
-
-  copyTextToClipboard = (text) => {
-    var textArea = document.createElement("textarea");
-
-    textArea.style.position = "fixed";
-    textArea.style.top = 0;
-    textArea.style.left = 0;
-    textArea.style.width = "2em";
-    textArea.style.height = "2em";
-    textArea.style.padding = 0;
-    textArea.style.opacity = 0;
-    textArea.style.border = "none";
-    textArea.style.outline = "none";
-    textArea.style.boxShadow = "none";
-    textArea.style.background = "transparent";
-    textArea.value = text;
-
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    try {
-      const isSuccessful = document.execCommand("copy");
-      return isSuccessful;
-    } catch (err) {
-      return false;
-    } finally {
-      document.body.removeChild(textArea);
-    }
-  };
-
-  copyCode = (text) => {
+  copyCode = async (text) => {
     text = text ? text : this.state.code;
-    const isCopied = this.copyTextToClipboard(text);
+    const { copyTextToClipboard } = await import("../utils/copyText");
+    copyTextToClipboard(text);
     if (!localStorage.getItem("snackbarShowed")) {
       this.setState({ showSnackbar: true });
     }
-    return isCopied;
   };
 
   render() {

@@ -1,3 +1,21 @@
+/* Hide scrollbar for Chrome, Safari and Opera */
+.editor-area::-webkit-scrollbar {
+  display: none !important;
+}
+.editor-area::-webkit-scrollbar {
+  display: none;
+}
+
+.editor-area {
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+}
+
+/* Hide scrollbar for IE and Edge */
+.editor-area {
+  -ms-overflow-style: none !important;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -32,6 +50,7 @@ body {
 }
 .editor-content {
   height: 73vh;
+  padding: 5px 10px;
 }
 .editor-divider {
   border: 1px solid rgb(228, 231, 235);
@@ -45,4 +64,27 @@ body {
 }
 #copyElement {
   display: none;
+}
+.editor-area {
+  font-size: 16px;
+  border: none;
+  overflow: auto;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  border: none;
+  resize: none;
+  height: 95%;
+  width: 100%;
+  font-family: Consolas, monospace;
+  font-feature-settings: "liga" 0, "calt" 0;
+  line-height: normal;
+}
+.editor-jsx {
+  cursor: default !important;
+
+  -webkit-user-select: all !important; /* Safari */
+  -ms-user-select: all !important; /* IE 10+ and Edge */
+  user-select: all !important; /* Standard syntax */
 }

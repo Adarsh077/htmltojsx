@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, createRef } from "react";
 import { IconButton, Button, Tooltip } from "@material-ui/core";
 import { SettingsOutlined, NoteAddOutlined } from "@material-ui/icons";
-import MonacoEditor from "react-monaco-editor";
 import Settings from "./components/Settings";
 import EditorBar from "./components/EditorBar";
 
@@ -12,19 +11,14 @@ export class HTML extends Component {
       code: "",
       showSettings: false,
     };
-    this.fileInputRef = React.createRef();
-    this.editor = "";
+    this.htmlEditorRef = createRef();
   }
 
-  editorDidMount = (editor, monaco) => {
-    editor.focus();
-    this.editor = editor;
-  };
-
-  onChange = (newValue, e) => {
-    this.setState({ code: newValue });
-    this.props.convertCode(newValue);
-    this.editor.focus();
+  onChange = async (e) => {
+    const { value } = e.target;
+    this.setState({ code: value });
+    await this.props.convertCode(value);
+    this.htmlEditorRef.current.focus();
   };
 
   handleSettingsClose = () => {
@@ -41,20 +35,19 @@ export class HTML extends Component {
     reader.readAsText(input.files[0]);
   };
 
-  prettify = () => {
+  prettify = async () => {
     const { code } = this.state;
-    const formattedCode = this.props.prettify(code, true);
-    this.setState({ code: formattedCode });
+    const { prettify } = await import("../utils/prettifyHTML");
+    const formattedCode = prettify(code);
+    if (formattedCode.err) {
+      this.props.convertCode(formattedCode.err, true);
+    } else {
+      this.setState({ code: formattedCode });
+    }
   };
 
   render() {
-    const { editorRef } = this.props;
     const { code, showSettings } = this.state;
-    const options = {
-      selectOnLineNumbers: true,
-      autoClosingBrackets: true,
-      smoothScrolling: true,
-    };
     return (
       <div>
         <EditorBar label="HTML">
@@ -79,15 +72,14 @@ export class HTML extends Component {
         </EditorBar>
         <Settings open={showSettings} handleClose={this.handleSettingsClose} />
         <div className="editor-content">
-          <MonacoEditor
-            height="100%"
-            ref={editorRef}
-            language="javascript"
+          <textarea
+            spellCheck="false"
+            wrap="off"
+            className="editor-area"
             value={code}
-            options={options}
+            ref={this.htmlEditorRef}
             onChange={this.onChange}
-            editorDidMount={this.editorDidMount}
-          />
+          ></textarea>
         </div>
       </div>
     );

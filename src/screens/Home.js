@@ -30,6 +30,7 @@ class Home extends Component {
   };
 
   convertCode = async (html, error) => {
+    console.log(html, error);
     if (error) {
       return this.setState({ code: html });
     }
@@ -92,7 +93,7 @@ class Home extends Component {
               horizontal: "left",
             }}
             open={showSnackbar}
-            message="JSX is automatically copied after every change."
+            message="JSX is copied after every change."
             action={
               <React.Fragment>
                 <Button

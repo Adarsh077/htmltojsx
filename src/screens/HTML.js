@@ -39,17 +39,6 @@ export class HTML extends Component {
     reader.readAsText(input.files[0]);
   };
 
-  prettify = async () => {
-    const { code } = this.state;
-    const { prettify } = await import("../utils/prettifyHTML");
-    const formattedCode = prettify(code);
-    if (formattedCode.err) {
-      this.props.convertCode(formattedCode.err, true);
-    } else {
-      this.setState({ code: formattedCode });
-    }
-  };
-
   render() {
     const { code, showSettings } = this.state;
     return (
@@ -72,7 +61,6 @@ export class HTML extends Component {
               <SettingsOutlined fontSize="small" />
             </IconButton>
           </Tooltip>
-          <Button onClick={this.prettify}>Prettify</Button>
         </EditorBar>
         <Settings open={showSettings} handleClose={this.handleSettingsClose} />
         <div className="editor-content">

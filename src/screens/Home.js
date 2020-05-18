@@ -1,16 +1,8 @@
 import React, { Component } from "react";
 import { Paper, Grid, Snackbar, Button } from "@material-ui/core";
-import prettier from "prettier/standalone";
-import babelparser from "prettier/parser-babel";
 import HTMLtoJSX from "htmltojsx";
 import HTML from "./HTML";
 import JSX from "./JSX";
-
-const prettierOptions = {
-  parser: "babel",
-  plugins: [babelparser],
-  tabWidth: 2,
-};
 
 const createComponent = (jsx) => {
   const className = localStorage.getItem("componentName");
@@ -37,15 +29,6 @@ class Home extends Component {
     localStorage.setItem("snackbarShowed", "true");
   };
 
-  formatCode = (jsx) => {
-    try {
-      const formattedJSX = prettier.format(jsx, prettierOptions);
-      return formattedJSX;
-    } catch (e) {
-      return e.message;
-    }
-  };
-
   convertCode = async (html, error) => {
     if (error) {
       return this.setState({ code: html });
@@ -60,7 +43,10 @@ class Home extends Component {
       localStorage.getItem("createComponent") === "true";
     if (shouldCreateComponent) {
       output = createComponent(output);
-      output = this.formatCode(output);
+      const { prettifyJSX } = await import("../utils/prettifyJSX");
+      console.log("Reached");
+      output = await prettifyJSX(output);
+
       if (output.indexOf("Unexpected token") > -1) {
         const { prettify } = await import("../utils/prettifyHTML");
         output = prettify(output);

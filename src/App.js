@@ -16,6 +16,9 @@ const styles = (theme) => ({
 });
 
 class App extends Component {
+  componentDidMount = () =>
+    document.querySelector(".loading").setAttribute("style", "display: none");
+
   render() {
     if (!localStorage.getItem("copyChange")) {
       localStorage.setItem("copyChange", true);

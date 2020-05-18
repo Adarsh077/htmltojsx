@@ -14,6 +14,10 @@ export class HTML extends Component {
     this.htmlEditorRef = createRef();
   }
 
+  componentDidMount() {
+    this.htmlEditorRef.current.focus();
+  }
+
   onChange = async (e) => {
     const { value } = e.target;
     this.setState({ code: value });

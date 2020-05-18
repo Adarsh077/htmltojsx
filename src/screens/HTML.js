@@ -12,6 +12,7 @@ export class HTML extends Component {
       showSettings: false,
     };
     this.htmlEditorRef = createRef();
+    this.fileInputRef = createRef();
   }
 
   componentDidMount() {

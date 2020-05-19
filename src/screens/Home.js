@@ -4,6 +4,8 @@ import HTMLtoJSX from "htmltojsx";
 import HTML from "./HTML";
 import JSX from "./JSX";
 
+const localStorage = window.localStorage;
+
 const createComponent = (jsx) => {
   const className = localStorage.getItem("componentName");
   return `export default class ${className} extends Component{

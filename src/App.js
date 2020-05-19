@@ -14,6 +14,7 @@ const styles = (theme) => ({
     marginTop: "24px",
   },
 });
+const localStorage = window.localStorage;
 
 class App extends Component {
   componentDidMount = () =>

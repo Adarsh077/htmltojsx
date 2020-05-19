@@ -3,6 +3,8 @@ import { IconButton, Tooltip, Badge } from "@material-ui/core";
 import { FileCopyOutlined, GetAppOutlined } from "@material-ui/icons";
 import EditorBar from "./components/EditorBar";
 
+const localStorage = window.localStorage;
+
 const hideBadge = () => !!localStorage.getItem("hideBadge");
 
 export class JSX extends Component {

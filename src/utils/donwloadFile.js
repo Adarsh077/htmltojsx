@@ -1,3 +1,5 @@
+const localStorage = window.localStorage;
+
 const donwloadFile = (text) => {
   localStorage.setItem("hideBadge", "true");
   const fileName = localStorage.getItem("componentName") || "htmltojsx.ml.jsx";

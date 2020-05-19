@@ -11,6 +11,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { Grid, Box, TextField } from "@material-ui/core";
 
+const localStorage = window.localStorage;
+
 const styles = (theme) => ({
   root: {
     margin: 0,

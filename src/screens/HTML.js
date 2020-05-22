@@ -1,5 +1,5 @@
 import React, { Component, createRef } from "react";
-import { IconButton, Button, Tooltip } from "@material-ui/core";
+import { IconButton, Tooltip } from "@material-ui/core";
 import { SettingsOutlined, NoteAddOutlined } from "@material-ui/icons";
 import Settings from "./components/Settings";
 import EditorBar from "./components/EditorBar";

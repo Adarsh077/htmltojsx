@@ -8,11 +8,15 @@ const localStorage = window.localStorage;
 
 const createComponent = (jsx) => {
   const className = localStorage.getItem("componentName");
-  return `export default class ${className} extends Component{
-      render(){
-        ${jsx}
-      }
-    }
+  return `import React, {Component} from "react";
+  
+export default class ${className} extends Component{
+  render(){
+    return (
+      ${jsx}
+    )
+  }
+}
   `;
 };
 
@@ -46,8 +50,8 @@ class Home extends Component {
       localStorage.getItem("createComponent") === "true";
     if (shouldCreateComponent) {
       output = createComponent(output);
+      this.setState({ code: output });
       const { prettifyJSX } = await import("../utils/prettifyJSX");
-      console.log("Reached");
       output = await prettifyJSX(output);
 
       if (output.indexOf("Unexpected token") > -1) {

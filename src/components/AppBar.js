@@ -6,7 +6,7 @@ import {
   makeStyles,
   IconButton,
 } from "@material-ui/core";
-import { WhatsApp, Twitter, Facebook, Instagram } from "@material-ui/icons";
+import { WhatsApp, Twitter, Facebook } from "@material-ui/icons";
 
 const styles = makeStyles({
   title: {
@@ -22,18 +22,34 @@ function Navbar() {
         <Typography variant="h6" className={classes.title}>
           HTML TO JSX
         </Typography>
-        <IconButton color="inherit">
-          <WhatsApp />
-        </IconButton>
-        <IconButton color="inherit">
-          <Twitter />
-        </IconButton>
-        <IconButton color="inherit">
-          <Facebook />
-        </IconButton>
-        <IconButton color="inherit">
-          <Instagram />
-        </IconButton>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="whatsapp://send?text=https://htmltojsx.ml/"
+          data-action="share/whatsapp/share"
+        >
+          <IconButton color="inherit">
+            <WhatsApp />
+          </IconButton>
+        </a>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://twitter.com/intent/tweet?text=https://htmltojsx.ml/"
+        >
+          <IconButton color="inherit">
+            <Twitter />
+          </IconButton>
+        </a>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.facebook.com/sharer/sharer.php?u=https://htmltojsx.ml"
+        >
+          <IconButton color="inherit">
+            <Facebook />
+          </IconButton>
+        </a>
       </Toolbar>
     </AppBar>
   );
